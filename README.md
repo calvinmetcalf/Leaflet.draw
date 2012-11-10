@@ -1,4 +1,7 @@
+this is my custom fork of Leaflet.draw that outputs geojson instead of layers which I made for [leaf-couch](https://github.com/calvinmetcalf/leaf-couch). You almost deffinitly don't want to use it.
+
 #Leaflet.draw
+
 Adds support for drawing polys to Leaflet.
 
 Check out the [demo](http://jacobtoye.github.com/Leaflet.draw/)
