@@ -239,7 +239,8 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 			weight: 4,
 			opacity: 0.5,
 			fill: false,
-			clickable: true
+			clickable: true,
+			type: "polyline"
 		},
 		zIndexOffset: 2000 // This should be > than the highest z-index any map layers
 	},
@@ -553,6 +554,7 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 	}
 });
 
+
 L.Polygon.Draw = L.Polyline.Draw.extend({
 	Poly: L.Polygon,
 	
@@ -567,7 +569,8 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 			fill: true,
 			fillColor: null, //same as color by default
 			fillOpacity: 0.2,
-			clickable: false
+			clickable: false,
+			type: "polygon"
 		}
 	},
 
@@ -606,6 +609,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 		}
 	}
 });
+
 
 L.SimpleShape = {};
 

@@ -55,8 +55,12 @@ L.Marker.Draw = L.Handler.Draw.extend({
 
 	_onClick: function (e) {
 		this._map.fire(
-			'draw:marker-created',
-			{ marker: new L.Marker(this._marker.getLatLng(), { icon: this.options.icon }) }
+			'drawn',{feature:{ 
+		"type": "Feature",
+		"geometry": {type:"Point", coordinates:L.Util.latLngToXY(this._marker.getLatLng())},
+		"properties": {"Created In":"Leaflet"}
+	}}
+			
 		);
 		this.disable();
 	}

@@ -27,8 +27,11 @@ L.Rectangle.Draw = L.SimpleShape.Draw.extend({
 
 	_fireCreatedEvent: function () {
 		this._map.fire(
-			'draw:rectangle-created',
-			{ rect: new L.Rectangle(this._shape.getBounds(), this.options.shapeOptions) }
+			'drawn',{feature:{ 
+		"type": "Feature",
+		"geometry": {type:"Polygon", coordinates:[this._shape.getBounds().map(L.Util.latLngToXY)]},
+		"properties": {"Created In":"Leaflet"}
+	}}
 		);
 	}
 });
