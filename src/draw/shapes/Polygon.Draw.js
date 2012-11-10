@@ -12,8 +12,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 			fill: true,
 			fillColor: null, //same as color by default
 			fillOpacity: 0.2,
-			clickable: false,
-			type: "polygon"
+			clickable: false
 		}
 	},
 
@@ -37,7 +36,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 			text: text
 		};
 	},
-_finishShape: function () {
+	_finishShape: function () {
 		if (!this.options.allowIntersection && this._poly.newLatLngIntersects(this._poly.getLatLngs()[0], true)) {
 			this._showErrorLabel();
 			return;
@@ -48,10 +47,12 @@ _finishShape: function () {
 		}
 
 		this._map.fire(
-			'drawn',{feature:{ 
-		"type": "Feature",
-		"geometry": {type:"Polygon", coordinates:[this._poly.getLatLngs().map(L.Util.latLngToXY)]},
-		"properties": {"Created In":"Leaflet"}}}
+			'drawn', {feature: {
+			"type": "Feature",
+			"geometry": {type: "Polygon", coordinates: [this._poly.getLatLngs().map(L.Util.latLngToXY)]},
+			"properties": {"Created In": "Leaflet"}
+		}
+		}
 		);
 		this.disable();
 	},

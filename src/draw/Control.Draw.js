@@ -1,3 +1,6 @@
+L.Util.latLngToXY = function (ll) {
+	return [ll.lng, ll.lat];
+};
 L.Map.mergeOptions({
 	drawControl: false
 });

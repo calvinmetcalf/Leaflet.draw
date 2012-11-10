@@ -26,12 +26,14 @@ L.Rectangle.Draw = L.SimpleShape.Draw.extend({
 	},
 
 	_fireCreatedEvent: function () {
+		var b = new L.Rectangle(this._shape.getBounds()).getLatLngs();
 		this._map.fire(
-			'drawn',{feature:{ 
-		"type": "Feature",
-		"geometry": {type:"Polygon", coordinates:[this._shape.getBounds().map(L.Util.latLngToXY)]},
-		"properties": {"Created In":"Leaflet"}
-	}}
+			'drawn', {feature: {
+			"type": "Feature",
+			"geometry": {type: "Polygon", coordinates: [b.map(L.Util.latLngToXY)]},
+			"properties": {"Created In": "Leaflet"}
+		}
+		}
 		);
 	}
 });

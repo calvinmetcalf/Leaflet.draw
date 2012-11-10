@@ -107,10 +107,12 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 		}
 
 		this._map.fire(
-			'drawn',{feature:{ 
-		"type": "Feature",
-		"geometry": {type:"LineString", coordinates:this._poly.getLatLngs().map(L.Util.latLngToXY)},
-		"properties": {"Created In":"Leaflet"}}}
+			'drawn', {feature: {
+				"type": "Feature",
+				"geometry": {type: "LineString", coordinates: this._poly.getLatLngs().map(L.Util.latLngToXY)},
+				"properties": {"Created In": "Leaflet"}
+			}
+			}
 		);
 		this.disable();
 	},

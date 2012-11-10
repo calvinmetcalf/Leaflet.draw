@@ -239,8 +239,7 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 			weight: 4,
 			opacity: 0.5,
 			fill: false,
-			clickable: true,
-			type: "polyline"
+			clickable: true
 		},
 		zIndexOffset: 2000 // This should be > than the highest z-index any map layers
 	},
@@ -326,8 +325,12 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 		}
 
 		this._map.fire(
-			'draw:poly-created',
-			{ poly: new this.Poly(this._poly.getLatLngs(), this.options.shapeOptions) }
+			'drawn', {feature: {
+				"type": "Feature",
+				"geometry": {type: "LineString", coordinates: this._poly.getLatLngs().map(L.Util.latLngToXY)},
+				"properties": {"Created In": "Leaflet"}
+			}
+			}
 		);
 		this.disable();
 	},
@@ -569,8 +572,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 			fill: true,
 			fillColor: null, //same as color by default
 			fillOpacity: 0.2,
-			clickable: false,
-			type: "polygon"
+			clickable: false
 		}
 	},
 
@@ -594,7 +596,26 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 			text: text
 		};
 	},
+	_finishShape: function () {
+		if (!this.options.allowIntersection && this._poly.newLatLngIntersects(this._poly.getLatLngs()[0], true)) {
+			this._showErrorLabel();
+			return;
+		}
+		if (!this._shapeIsValid()) {
+			this._showErrorLabel();
+			return;
+		}
 
+		this._map.fire(
+			'drawn', {feature: {
+			"type": "Feature",
+			"geometry": {type: "Polygon", coordinates: [this._poly.getLatLngs().map(L.Util.latLngToXY)]},
+			"properties": {"Created In": "Leaflet"}
+		}
+		}
+		);
+		this.disable();
+	},
 	_shapeIsValid: function () {
 		return this._markers.length >= 3;
 	},
@@ -710,11 +731,16 @@ L.Circle.Draw = L.SimpleShape.Draw.extend({
 
 	_fireCreatedEvent: function () {
 		this._map.fire(
-			'draw:circle-created',
-			{ circ: new L.Circle(this._startLatLng, this._shape.getRadius(), this.options.shapeOptions) }
+			'drawn', {feature: {
+				"type": "Feature",
+				"geometry": {type: "Point", coordinates: L.Util.latLngToXY(this._startLatLng)},
+				"properties": {"Created In": "Leaflet", radius: this._shape.getRadius()}
+			}}
+			
 		);
 	}
 });
+
 
 L.Rectangle.Draw = L.SimpleShape.Draw.extend({
 	type: 'rectangle',
@@ -744,12 +770,18 @@ L.Rectangle.Draw = L.SimpleShape.Draw.extend({
 	},
 
 	_fireCreatedEvent: function () {
+		var b = new L.Rectangle(this._shape.getBounds()).getLatLngs();
 		this._map.fire(
-			'draw:rectangle-created',
-			{ rect: new L.Rectangle(this._shape.getBounds(), this.options.shapeOptions) }
+			'drawn', {feature: {
+			"type": "Feature",
+			"geometry": {type: "Polygon", coordinates: [b.map(L.Util.latLngToXY)]},
+			"properties": {"Created In": "Leaflet"}
+		}
+		}
 		);
 	}
 });
+
 
 L.Marker.Draw = L.Handler.Draw.extend({
 	type: 'marker',
@@ -808,13 +840,20 @@ L.Marker.Draw = L.Handler.Draw.extend({
 
 	_onClick: function (e) {
 		this._map.fire(
-			'draw:marker-created',
-			{ marker: new L.Marker(this._marker.getLatLng(), { icon: this.options.icon }) }
+			'drawn', {feature: {
+			"type": "Feature",
+			"geometry": {type: "Point", coordinates: L.Util.latLngToXY(this._marker.getLatLng())},
+			"properties": {"Created In": "Leaflet"}
+		}}
 		);
 		this.disable();
 	}
 });
 
+
+L.Util.latLngToXY = function (ll) {
+	return [ll.lng, ll.lat];
+};
 L.Map.mergeOptions({
 	drawControl: false
 });

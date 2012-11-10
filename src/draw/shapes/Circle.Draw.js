@@ -27,11 +27,11 @@ L.Circle.Draw = L.SimpleShape.Draw.extend({
 
 	_fireCreatedEvent: function () {
 		this._map.fire(
-			'drawn',{feature:{ 
-		"type": "Feature",
-		"geometry": {type:"Point", coordinates:L.Util.latLngToXY(this._startLatLng)},
-		"properties": {"Created In":"Leaflet",radius:this._shape.getRadius()}
-	}}
+			'drawn', {feature: {
+				"type": "Feature",
+				"geometry": {type: "Point", coordinates: L.Util.latLngToXY(this._startLatLng)},
+				"properties": {"Created In": "Leaflet", radius: this._shape.getRadius()}
+			}}
 			
 		);
 	}
